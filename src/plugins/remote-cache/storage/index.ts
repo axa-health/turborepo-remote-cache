@@ -7,6 +7,7 @@ import {
   type AzureBlobStorageOptions as AzureBlobStorageOpts,
   createAzureBlobStorage,
 } from './azure-blob-storage.js'
+import { createGithubActionsCache } from './github-actions-cache.js'
 import {
   type GoogleCloudStorageOptions as GCSOpts,
   createGoogleCloudStorage,
@@ -41,8 +42,10 @@ export interface StorageProvider {
     artifactPath: string,
     cb: (err: Error | null, exists?: boolean) => void,
   ) => void
-  createReadStream: (artifactPath: string) => Readable
-  createWriteStream: (artifactPath: string) => Writable
+  createReadStream: (
+    artifactPath: string,
+  ) => NodeJS.ReadableStream | Promise<NodeJS.ReadableStream>
+  createWriteStream: (artifactPath: string) => Writable | Promise<Writable>
 }
 
 function createStorageLocation<Provider extends STORAGE_PROVIDERS>(
@@ -91,6 +94,9 @@ function createStorageLocation<Provider extends STORAGE_PROVIDERS>(
     case STORAGE_PROVIDERS.AZURE_BLOB_STORAGE: {
       const { connectionString } = providerOptions as AzureBlobStorageOptions
       return createAzureBlobStorage({ containerName: path, connectionString })
+    }
+    case STORAGE_PROVIDERS.GITHUB_ACTIONS_CACHE: {
+      return createGithubActionsCache()
     }
     default:
       throw new Error(
@@ -142,10 +148,8 @@ export function createLocation<Provider extends STORAGE_PROVIDERS>(
     team: string,
     artifact: Readable,
   ) {
-    return pipeline(
-      artifact,
-      location.createWriteStream(join(team, artifactId)),
-    )
+    const stream = await location.createWriteStream(join(team, artifactId))
+    return pipeline(artifact, stream)
   }
 
   return {

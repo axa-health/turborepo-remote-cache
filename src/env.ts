@@ -16,6 +16,7 @@ export const STORAGE_PROVIDERS = {
   GOOGLE_CLOUD_STORAGE: 'google-cloud-storage',
   AZURE_BLOB_STORAGE: 'azure-blob-storage',
   MINIO: 'minio',
+  GITHUB_ACTIONS_CACHE: 'github-actions-cache',
 } as const
 export type STORAGE_PROVIDERS =
   typeof STORAGE_PROVIDERS[keyof typeof STORAGE_PROVIDERS]

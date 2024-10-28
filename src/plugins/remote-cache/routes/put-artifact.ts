@@ -41,6 +41,7 @@ export const putArtifact: RouteOptions<
 
       reply.send({ urls: [`${team}/${artifactId}`] })
     } catch (err) {
+      console.error(err)
       // we need this error throw since turbo retries if the error is in 5xx range
       throw preconditionFailed('Error during the artifact creation', err)
     }
