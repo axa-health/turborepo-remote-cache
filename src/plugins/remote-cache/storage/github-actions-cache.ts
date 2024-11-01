@@ -34,9 +34,15 @@ class GithubActionsCache {
   constructor(private url: string, private token: string) {}
 
   static fromEnv(): GithubActionsCache {
+    if (!process.env.ACTIONS_CACHE_URL) {
+      throw new Error("missing ACTIONS_CACHE_URL")
+    }
+    if (!process.env.ACTIONS_RUNTIME_TOKEN) {
+      throw new Error("missing ACTIONS_RUNTIME_TOKEN")
+    }
     return new GithubActionsCache(
-      process.env.ACTIONS_CACHE_URL ?? '',
-      process.env.ACTIONS_RUNTIME_TOKEN ?? '',
+      process.env.ACTIONS_CACHE_URL,
+      process.env.ACTIONS_RUNTIME_TOKEN,
     )
   }
 
