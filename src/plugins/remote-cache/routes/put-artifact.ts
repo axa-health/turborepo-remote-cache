@@ -11,6 +11,7 @@ import {
   type Querystring,
   artifactsRouteSchema,
 } from './schema.js'
+import logger from '../../../logger.js'
 
 export const putArtifact: RouteOptions<
   Server,
@@ -41,7 +42,7 @@ export const putArtifact: RouteOptions<
 
       reply.send({ urls: [`${team}/${artifactId}`] })
     } catch (err) {
-      console.error(err)
+      logger.error({ err })
       // we need this error throw since turbo retries if the error is in 5xx range
       throw preconditionFailed('Error during the artifact creation', err)
     }

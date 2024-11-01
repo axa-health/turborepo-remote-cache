@@ -19,11 +19,16 @@ export function createGithubActionsCache(): StorageProvider {
       artifactPath: string,
       cb: (err: Error | null, exists?: boolean) => void,
     ): void {
-      // error handling?
       cache
-        .get([artifactPath], VERSION)
+        .getMeta([artifactPath], VERSION)
         .then(() => cb(null, true))
-        .catch(() => cb(null, false))
+        .catch((err) => {
+          if (err instanceof NotFoundError) {
+            cb(null, false)
+          } else {
+            cb(err, false)
+          }
+        })
     },
   }
 }
@@ -35,10 +40,10 @@ class GithubActionsCache {
 
   static fromEnv(): GithubActionsCache {
     if (!process.env.ACTIONS_CACHE_URL) {
-      throw new Error("missing ACTIONS_CACHE_URL")
+      throw new Error('missing ACTIONS_CACHE_URL')
     }
     if (!process.env.ACTIONS_RUNTIME_TOKEN) {
-      throw new Error("missing ACTIONS_RUNTIME_TOKEN")
+      throw new Error('missing ACTIONS_RUNTIME_TOKEN')
     }
     return new GithubActionsCache(
       process.env.ACTIONS_CACHE_URL,
@@ -46,7 +51,10 @@ class GithubActionsCache {
     )
   }
 
-  async get(keys: string[], version: string): Promise<NodeJS.ReadableStream> {
+  async getMeta(
+    keys: string[],
+    version: string,
+  ): Promise<{ archiveLocation: string }> {
     logger.info(`Getting ${keys} ${version}`)
     const res = await fetch(
       `${this.url}_apis/artifactcache/cache?keys=${encodeURIComponent(
@@ -63,15 +71,20 @@ class GithubActionsCache {
       throw new NotFoundError()
     }
     const body = (await res.json()) as { archiveLocation: string }
-    const blobUrl = body.archiveLocation
     if (!body.archiveLocation) {
       throw new NotFoundError() // idk if this is possible
     }
-    const res2 = await fetch(blobUrl)
-    if (!res2.ok || !res2.body) {
+    return body
+  }
+
+  async get(keys: string[], version: string): Promise<NodeJS.ReadableStream> {
+    const meta = await this.getMeta(keys, version)
+
+    const res = await fetch(meta.archiveLocation)
+    if (!res.ok || !res.body) {
       throw new Error('Failed to fetch blob')
     }
-    return res2.body
+    return res.body
   }
 
   async upload(key: string, version: string): Promise<Writable> {
