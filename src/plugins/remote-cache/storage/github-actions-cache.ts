@@ -103,7 +103,11 @@ class GithubActionsCache {
       }),
     })
     if (!res.ok) {
-      throw new Error(await res.text())
+      if (res.status === 409) {
+        logger.info(`Cache entry ${key} ${version} already exists, skipping upload`)
+        return new Ignore();
+      }
+      throw new Error(res.status.toString() + " " + await res.text())
     }
     const body = (await res.json()) as { cacheId: string }
     const id = body.cacheId
@@ -111,6 +115,20 @@ class GithubActionsCache {
     return new Upload(id, this.url, this.token)
   }
 }
+
+class Ignore extends Writable {
+  _write(
+    // biome-ignore lint:lint/suspicious/noExplicitAny
+    _: any,
+    _enc: BufferEncoding,
+    callback: (error?: Error | null) => void,
+  ) {
+    callback(null)
+  }
+  _final(callback: (error?: Error | null) => void) {
+      callback(null)
+    }
+  }
 
 class Upload extends Writable {
   private data: Uint8Array
