@@ -1,3 +1,53 @@
+## [2.2.8](https://github.com/ducktors/turborepo-remote-cache/compare/v2.2.7...v2.2.8) (2024-11-29)
+
+
+### Bug Fixes
+
+* update node on dockerfile ([a9dd8cb](https://github.com/ducktors/turborepo-remote-cache/commit/a9dd8cb0269c1e2f5f4dc689e214c3b1e0042fdb))
+
+## [2.2.7](https://github.com/ducktors/turborepo-remote-cache/compare/v2.2.6...v2.2.7) (2024-11-27)
+
+
+### Bug Fixes
+
+* change logger config ([5c7d495](https://github.com/ducktors/turborepo-remote-cache/commit/5c7d495d1e811f9fe4456b10e0f039d3e76bd9eb))
+* logger options only accepts a configuration object [#479](https://github.com/ducktors/turborepo-remote-cache/issues/479) ([705d9bf](https://github.com/ducktors/turborepo-remote-cache/commit/705d9bfc31b78e2aaf49829c42e0ab3c7726451d))
+
+## [2.2.6](https://github.com/ducktors/turborepo-remote-cache/compare/v2.2.5...v2.2.6) (2024-11-27)
+
+
+### Bug Fixes
+
+* update fastify and plugins to 5.0 ([d0be6ed](https://github.com/ducktors/turborepo-remote-cache/commit/d0be6edf336919e900091f14f6b5494d45777419))
+
+## [2.2.5](https://github.com/ducktors/turborepo-remote-cache/compare/v2.2.4...v2.2.5) (2024-11-19)
+
+
+### Bug Fixes
+
+* **deps:** bump cross-spawn from 6.0.5 to 6.0.6 ([cba4fbd](https://github.com/ducktors/turborepo-remote-cache/commit/cba4fbdc4bafc366a39eb87143d950470ec0f33f))
+
+## [2.2.4](https://github.com/ducktors/turborepo-remote-cache/compare/v2.2.3...v2.2.4) (2024-11-15)
+
+
+### Bug Fixes
+
+* **deps:** bump path-to-regexp from 6.2.1 to 6.3.0 ([60edba9](https://github.com/ducktors/turborepo-remote-cache/commit/60edba97e2faa6d3423111a36ae165384f7f7557))
+
+## [2.2.3](https://github.com/ducktors/turborepo-remote-cache/compare/v2.2.2...v2.2.3) (2024-11-15)
+
+
+### Bug Fixes
+
+* **deps:** bump micromatch from 4.0.5 to 4.0.8 ([b24e0d3](https://github.com/ducktors/turborepo-remote-cache/commit/b24e0d3fe60439674de888dcee9889cd8451f888))
+
+## [2.2.2](https://github.com/ducktors/turborepo-remote-cache/compare/v2.2.1...v2.2.2) (2024-11-15)
+
+
+### Bug Fixes
+
+* Use BODY_LIMIT when creating app ([c0d999f](https://github.com/ducktors/turborepo-remote-cache/commit/c0d999f7d8ef69950b2fb13374eef65901a1c712))
+
 ## [2.2.1](https://github.com/ducktors/turborepo-remote-cache/compare/v2.2.0...v2.2.1) (2024-06-11)
 
 
