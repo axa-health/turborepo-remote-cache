@@ -104,10 +104,12 @@ class GithubActionsCache {
     })
     if (!res.ok) {
       if (res.status === 409) {
-        logger.info(`Cache entry ${key} ${version} already exists, skipping upload`)
-        return new Ignore();
+        logger.info(
+          `Cache entry ${key} ${version} already exists, skipping upload`,
+        )
+        return new Ignore()
       }
-      throw new Error(res.status.toString() + " " + await res.text())
+      throw new Error(`${res.status.toString()} ${await res.text()}`)
     }
     const body = (await res.json()) as { cacheId: string }
     const id = body.cacheId
@@ -126,9 +128,9 @@ class Ignore extends Writable {
     callback(null)
   }
   _final(callback: (error?: Error | null) => void) {
-      callback(null)
-    }
+    callback(null)
   }
+}
 
 class Upload extends Writable {
   private data: Uint8Array

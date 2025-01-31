@@ -6,12 +6,12 @@ import type {
   RawRequestDefaultExpression,
   RouteOptions,
 } from 'fastify'
+import logger from '../../../logger.js'
 import {
   type Params,
   type Querystring,
   artifactsRouteSchema,
 } from './schema.js'
-import logger from '../../../logger.js'
 
 export const putArtifact: RouteOptions<
   Server,
